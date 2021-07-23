@@ -19,7 +19,7 @@ func Copy(pairs ...interface{}) error {
 		dst, src := pairs[i], pairs[i+1]
 		err := copyX(dst, src)
 		if err != nil {
-			return err
+			return fmt.Errorf("Copy[%v]: %w", i+1, err)
 		}
 	}
 	return nil
@@ -33,7 +33,7 @@ func CopyAll(pairs ...interface{}) *Errors {
 		dst, src := pairs[i], pairs[i+1]
 		err := copyX(dst, src)
 		if err != nil {
-			result.add(err)
+			result.add(fmt.Errorf("Copy[%v]: %w", i+1, err))
 		}
 	}
 	if result.Len() > 0 {
@@ -48,10 +48,8 @@ func copyX(dst, src interface{}) error {
 		return copyString(dst, src)
 	case *int:
 		return copyInt(dst, src)
-
 	case *int32:
 		return copyInt32(dst, src)
-
 	case *uint:
 		return copyUInt(dst, src)
 	case *float64:
