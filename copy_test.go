@@ -19,6 +19,35 @@ func TestCopy_non_pair(t *testing.T) {
 	}
 }
 
+func TestCopyAll(t *testing.T) {
+	var i int
+	var s string
+
+	pairs := []interface{}{
+		&i, 1, // ok
+		&s, "a", // ok
+		&i, "b", // bad
+		&s, 0, // bad
+	}
+
+	if err := CopyAll(pairs[:2]...); err != nil {
+		t.Fatal(err)
+	}
+	err := CopyAll(pairs...)
+	if err == nil {
+		t.Fatal("should fail")
+	}
+	if err.Len() != 2 {
+		t.Error("wrong error len", err.Len())
+	}
+	if err.Error() == "" {
+		t.Error("missing combined error")
+	}
+	if l := err.List(); len(l) != err.Len() {
+		t.Error("List inconsistent with Len")
+	}
+}
+
 func TestCopy(t *testing.T) {
 	bad := struct{}{}
 

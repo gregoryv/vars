@@ -1,7 +1,10 @@
 // Package vars provides copy funcs for variables
 package vars
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // MustCopy is the same as Copy only panics on error
 func MustCopy(pairs ...interface{}) {
@@ -21,6 +24,48 @@ func Copy(pairs ...interface{}) error {
 		}
 	}
 	return nil
+}
+
+func CopyAll(pairs ...interface{}) *Errors {
+	result := &Errors{}
+	for i := 0; i < len(pairs); i = i + 2 {
+		dst, src := pairs[i], pairs[i+1]
+		err := copyX(dst, src)
+		if err != nil {
+			result.add(err)
+		}
+	}
+	if result.Len() > 0 {
+		return result
+	}
+	return nil
+}
+
+type Errors struct {
+	errors []error
+}
+
+func (me *Errors) add(err error) {
+	me.errors = append(me.errors, err)
+}
+
+func (me *Errors) Len() int {
+	return len(me.errors)
+}
+
+func (me *Errors) Error() string {
+	var sb strings.Builder
+	for i, err := range me.errors {
+		if i > 0 {
+			sb.WriteString(", ")
+		}
+		sb.WriteString(err.Error())
+	}
+	return sb.String()
+}
+
+func (me *Errors) List() []error {
+	return me.errors
 }
 
 func copyX(dst, src interface{}) error {
@@ -45,8 +90,8 @@ func copyX(dst, src interface{}) error {
 	}
 }
 
-func copyString(dst *string, in interface{}) error {
-	v, ok := in.(string)
+func copyString(dst *string, src interface{}) error {
+	v, ok := src.(string)
 	if !ok {
 		return fmt.Errorf("not string")
 	}
@@ -54,8 +99,8 @@ func copyString(dst *string, in interface{}) error {
 	return nil
 }
 
-func copyInt(dst *int, in interface{}) error {
-	v, ok := in.(int)
+func copyInt(dst *int, src interface{}) error {
+	v, ok := src.(int)
 	if !ok {
 		return fmt.Errorf("not int")
 	}
@@ -63,8 +108,8 @@ func copyInt(dst *int, in interface{}) error {
 	return nil
 }
 
-func copyInt32(dst *int32, in interface{}) error {
-	v, ok := in.(int32)
+func copyInt32(dst *int32, src interface{}) error {
+	v, ok := src.(int32)
 	if !ok {
 		return fmt.Errorf("not int32")
 	}
@@ -72,8 +117,8 @@ func copyInt32(dst *int32, in interface{}) error {
 	return nil
 }
 
-func copyUInt(dst *uint, in interface{}) error {
-	v, ok := in.(uint)
+func copyUInt(dst *uint, src interface{}) error {
+	v, ok := src.(uint)
 	if !ok {
 		return fmt.Errorf("not uint")
 	}
@@ -81,8 +126,8 @@ func copyUInt(dst *uint, in interface{}) error {
 	return nil
 }
 
-func copyFloat64(dst *float64, in interface{}) error {
-	v, ok := in.(float64)
+func copyFloat64(dst *float64, src interface{}) error {
+	v, ok := src.(float64)
 	if !ok {
 		return fmt.Errorf("not float64")
 	}
@@ -90,8 +135,8 @@ func copyFloat64(dst *float64, in interface{}) error {
 	return nil
 }
 
-func copyBool(dst *bool, in interface{}) error {
-	v, ok := in.(bool)
+func copyBool(dst *bool, src interface{}) error {
+	v, ok := src.(bool)
 	if !ok {
 		return fmt.Errorf("not bool")
 	}
