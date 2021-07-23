@@ -25,12 +25,6 @@ func ExampleCopy() {
 	// Copy[7]: not string
 }
 
-func TestMustCopy(t *testing.T) {
-	defer catchPanic(t)
-	var s string
-	MustCopy(&s, 0)
-}
-
 func TestCopy_non_pair(t *testing.T) {
 	defer catchPanic(t)
 	var i int
@@ -122,12 +116,5 @@ func badCopy(t *testing.T, dst, src interface{}) {
 	t.Helper()
 	if err := Copy(dst, src); err == nil {
 		t.Errorf("%T <- %T should fail", dst, src)
-	}
-}
-
-func catchPanic(t *testing.T) {
-	if recover() == nil {
-		t.Helper()
-		t.Error("should panic")
 	}
 }

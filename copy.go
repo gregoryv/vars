@@ -5,13 +5,6 @@ import (
 	"fmt"
 )
 
-// MustCopy is the same as Copy only panics on error
-func MustCopy(pairs ...interface{}) {
-	if err := Copy(pairs...); err != nil {
-		panic(err)
-	}
-}
-
 // Copy copies pairwise destination, source. Returns error on first
 // error. Panics if pairs is uneven.
 func Copy(pairs ...interface{}) error {

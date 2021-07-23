@@ -6,6 +6,7 @@ and this project adheres to http://semver.org/spec/v2.0.0.html.
 
 ## [unreleased]
 
+- Add func MustCopyAll
 - Include index of failed pair value in errors
 
 ## [0.1.0] - 2021-07-23
