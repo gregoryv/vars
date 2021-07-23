@@ -1,29 +1,8 @@
 package vars
 
 import (
-	"fmt"
 	"testing"
 )
-
-func ExampleCopy() {
-	var (
-		i int
-		s string
-	)
-	pairs := []interface{}{
-		&i, 1, // ok
-		&s, "a", // ok
-		&i, "b", // bad
-		&s, 0, // bad
-	}
-	err := CopyAll(pairs...)
-	for _, err := range err.List() {
-		fmt.Println(err)
-	}
-	// output:
-	// Copy[5]: not int
-	// Copy[7]: not string
-}
 
 func TestCopy_non_pair(t *testing.T) {
 	defer catchPanic(t)
