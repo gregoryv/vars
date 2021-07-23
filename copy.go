@@ -1,9 +1,8 @@
-// Package vars provides copy funcs for variables
+// Package vars provides copy functions for variables
 package vars
 
 import (
 	"fmt"
-	"strings"
 )
 
 // MustCopy is the same as Copy only panics on error
@@ -26,6 +25,8 @@ func Copy(pairs ...interface{}) error {
 	return nil
 }
 
+// CopyAll is similar to Copy but does not fail on first
+// error. Returns nil on no errors.
 func CopyAll(pairs ...interface{}) *Errors {
 	result := &Errors{}
 	for i := 0; i < len(pairs); i = i + 2 {
@@ -39,33 +40,6 @@ func CopyAll(pairs ...interface{}) *Errors {
 		return result
 	}
 	return nil
-}
-
-type Errors struct {
-	errors []error
-}
-
-func (me *Errors) add(err error) {
-	me.errors = append(me.errors, err)
-}
-
-func (me *Errors) Len() int {
-	return len(me.errors)
-}
-
-func (me *Errors) Error() string {
-	var sb strings.Builder
-	for i, err := range me.errors {
-		if i > 0 {
-			sb.WriteString(", ")
-		}
-		sb.WriteString(err.Error())
-	}
-	return sb.String()
-}
-
-func (me *Errors) List() []error {
-	return me.errors
 }
 
 func copyX(dst, src interface{}) error {
