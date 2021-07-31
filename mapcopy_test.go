@@ -58,3 +58,34 @@ func TestMapCopy_fails_on_type_missmatch(t *testing.T) {
 		t.Errorf("missing %q in error: %s", "age", err)
 	}
 }
+
+func TestMapCopy_skips_subsequent_errors(t *testing.T) {
+	var (
+		name string
+	)
+	err := MapCopy(data,
+		&name, "age", // string <- int
+		&name, "weight", // second is skipped
+	)
+	if err == nil {
+		t.Fail()
+	}
+	if strings.Contains(err.Error(), "weight") {
+		t.Errorf("contains %q in error: %s", "weight", err)
+	}
+}
+
+func TestMapCopyAll_fail_on_first(t *testing.T) {
+	var (
+		name string
+		x    string
+	)
+	err := MapCopyAll(data,
+		&name, "name",
+		&x, "addr",
+		&x, "addr1",
+	)
+	if err == nil {
+		t.Fail()
+	}
+}
