@@ -1,46 +1,60 @@
 package vars
 
-import "fmt"
+import (
+	"strings"
+	"testing"
+)
 
-func ExampleMapCopy() {
-	data := map[string]interface{}{
-		"name":   "John Doe",
-		"age":    54,
-		"weight": 94.5, // kilos
-		"alive":  true,
-	}
+var data = map[string]interface{}{
+	"name":   "John Doe",
+	"age":    54,
+	"weight": 94.5, // kilos
+	"alive":  true,
+}
 
+func TestMapCopy_all_fields_exist(t *testing.T) {
 	var (
 		name   string
 		age    int
 		weight float64
 		alive  bool
-		addr   string
 	)
 	err := MapCopy(data,
 		&name, "name",
 		&age, "age",
 		&weight, "weight",
 		&alive, "alive",
+	)
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestMapCopy_ignore_missing(t *testing.T) {
+	var (
+		name string
+		addr string
+	)
+	err := MapCopy(data,
+		&name, "name",
 		&addr, "addr", // missing values are ignored
 	)
 	if err != nil {
-		fmt.Println(err)
+		t.Error(err)
 	}
-	// output:
 }
 
-func ExampleMapCopyAll() {
-	data := map[string]interface{}{}
-
-	var addr, name string
-	err := MapCopyAll(data,
-		&addr, "addr",
-		&name, "name",
+func TestMapCopy_fails_on_type_missmatch(t *testing.T) {
+	var (
+		name string
 	)
-	if err != nil {
-		fmt.Println(err)
+	err := MapCopy(data,
+		&name, "age", // string <- int
+	)
+	if err == nil {
+		t.Fail()
 	}
-	// output:
-	// MapCopyAll: missing addr, name
+	if !strings.Contains(err.Error(), "age") {
+		t.Errorf("missing %q in error: %s", "age", err)
+	}
 }

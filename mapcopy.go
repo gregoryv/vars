@@ -2,7 +2,6 @@ package vars
 
 import (
 	"fmt"
-	"strings"
 )
 
 func MapCopyAll(in map[string]interface{}, pairs ...interface{}) error {
@@ -13,9 +12,11 @@ func MapCopyAll(in map[string]interface{}, pairs ...interface{}) error {
 		return err
 	}
 	if len(mr.missing) > 0 {
-		return fmt.Errorf(
-			"MapCopyAll: missing %s", strings.Join(mr.missing, ", "),
-		)
+		errs := make(errors, len(mr.missing))
+		for i, key := range mr.missing {
+			errs[i] = fmt.Errorf("missing %q", key)
+		}
+		return errs
 	}
 	return nil
 }
