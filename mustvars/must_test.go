@@ -1,17 +1,17 @@
-package vars
+package mustvars
 
 import "testing"
 
-func TestMustCopy(t *testing.T) {
+func TestCopy(t *testing.T) {
 	defer catchPanic(t)
 	var s string
-	MustCopy(&s, 0)
+	Copy(&s, 0)
 }
 
-func TestMustCopyAll(t *testing.T) {
+func TestCopyAll(t *testing.T) {
 	defer catchPanic(t)
 	var s string
-	MustCopyAll(&s, "", &s, 1)
+	CopyAll(&s, "", &s, 1)
 }
 
 func catchPanic(t *testing.T) {

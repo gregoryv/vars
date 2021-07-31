@@ -97,3 +97,10 @@ func badCopy(t *testing.T, dst, src interface{}) {
 		t.Errorf("%T <- %T should fail", dst, src)
 	}
 }
+
+func catchPanic(t *testing.T) {
+	if recover() == nil {
+		t.Helper()
+		t.Error("should panic")
+	}
+}
