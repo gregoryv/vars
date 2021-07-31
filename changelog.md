@@ -6,6 +6,7 @@ and this project adheres to http://semver.org/spec/v2.0.0.html.
 
 ## [unreleased]
 
+- Add MapCopy and MapCopyAll
 - Add more examples
 
 ## [0.2.0] - 2021-07-23
