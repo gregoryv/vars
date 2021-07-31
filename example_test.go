@@ -18,7 +18,9 @@ func ExampleCopyAll() {
 		&s, 0, // bad
 	}
 	err := vars.CopyAll(pairs...)
-	for _, err := range err.List() {
+
+	errs := vars.SplitErr(err)
+	for _, err := range errs {
 		fmt.Println(err)
 	}
 	// output:
