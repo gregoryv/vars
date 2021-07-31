@@ -6,6 +6,19 @@ import (
 	"github.com/gregoryv/vars"
 )
 
+func Example_copyVariables() {
+	var (
+		dest int
+		val  interface{} = 1
+	)
+
+	err := vars.Copy(&dest, val)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// output:
+}
+
 func ExampleCopyAll() {
 	var (
 		i int

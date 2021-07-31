@@ -1,4 +1,3 @@
-// Package vars provides copy functions for variables
 package vars
 
 import (

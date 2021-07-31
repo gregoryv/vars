@@ -4,18 +4,22 @@ import (
 	"fmt"
 )
 
-func MapCopyAll(in map[string]interface{}, pairs ...interface{}) error {
-	mr := &mapCopier{
-		Input:           in,
-		AllowMissingKey: false,
-	}
-	return mr.Copy(pairs...)
-}
-
+// MapCopy copies values from the given map. Pairs argument must be an
+// even list of destination <- key pairs. Missing keys are ignored.
 func MapCopy(in map[string]interface{}, pairs ...interface{}) error {
 	mr := &mapCopier{
 		Input:           in,
 		AllowMissingKey: true,
+	}
+	return mr.Copy(pairs...)
+}
+
+// MapCopyAll copies values from the given map. Pairs argument must be an
+// even list of destination <- key pairs. Missing keys yield an error.
+func MapCopyAll(in map[string]interface{}, pairs ...interface{}) error {
+	mr := &mapCopier{
+		Input:           in,
+		AllowMissingKey: false,
 	}
 	return mr.Copy(pairs...)
 }
