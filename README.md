@@ -15,7 +15,7 @@ copy functions for variables.
         s string
     )
 	
-    vars.MustCopy(
+    _ = vars.Copy(
 	    &i, 0, 
         &s, "hello",
 	)
