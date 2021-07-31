@@ -70,22 +70,31 @@ func TestMapCopy_skips_subsequent_errors(t *testing.T) {
 	if err == nil {
 		t.Fail()
 	}
-	if strings.Contains(err.Error(), "weight") {
-		t.Errorf("contains %q in error: %s", "weight", err)
+	t.Log("got", err)
+
+	if !strings.Contains(err.Error(), "weight") {
+		t.Errorf("missing %q", "weight")
+	}
+	if !strings.Contains(err.Error(), "age") {
+		t.Errorf("missing %q", "age")
 	}
 }
 
-func TestMapCopyAll_fail_on_first(t *testing.T) {
+func TestMapCopyAll_fail_with_all_errors(t *testing.T) {
 	var (
 		name string
-		x    string
+		x    int
 	)
 	err := MapCopyAll(data,
-		&name, "name",
-		&x, "addr",
-		&x, "addr1",
+		&name, "name", // ok
+		&name, "addr", // missing
+		&x, "name", // bad type
 	)
 	if err == nil {
-		t.Fail()
+		t.Fatal("worked even when missing keys and bad types")
+	}
+	errs := SplitErr(err)
+	if len(errs) != 2 {
+		t.Error("got", err)
 	}
 }

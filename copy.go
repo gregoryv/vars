@@ -21,16 +21,16 @@ func Copy(pairs ...interface{}) error {
 // CopyAll is similar to Copy but does not fail on first
 // error. Returns nil on no errors.
 func CopyAll(pairs ...interface{}) error {
-	var result errors
+	var errs errors
 	for i := 0; i < len(pairs); i = i + 2 {
 		dst, src := pairs[i], pairs[i+1]
 		err := copyX(dst, src)
 		if err != nil {
-			result = append(result, fmt.Errorf("Copy[%v]: %w", i+1, err))
+			errs.add(fmt.Errorf("Copy[%v]: %w", i+1, err))
 		}
 	}
-	if len(result) > 0 {
-		return result
+	if errs.len() > 0 {
+		return &errs
 	}
 	return nil
 }
