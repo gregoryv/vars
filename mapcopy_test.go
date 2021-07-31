@@ -22,7 +22,7 @@ func ExampleMapCopy() {
 		&age, "age",
 		&weight, "weight",
 		&alive, "alive",
-		&addr, "addr", // missing values are ok
+		&addr, "addr", // missing values are ignored
 	)
 	if err != nil {
 		fmt.Println(err)
@@ -33,13 +33,14 @@ func ExampleMapCopy() {
 func ExampleMapCopyAll() {
 	data := map[string]interface{}{}
 
-	var addr string
+	var addr, name string
 	err := MapCopyAll(data,
 		&addr, "addr",
+		&name, "name",
 	)
 	if err != nil {
 		fmt.Println(err)
 	}
 	// output:
-	// MapCopyAll: missing addr
+	// MapCopyAll: missing addr, name
 }

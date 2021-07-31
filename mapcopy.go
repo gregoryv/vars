@@ -14,7 +14,7 @@ func MapCopyAll(in map[string]interface{}, pairs ...interface{}) error {
 	}
 	if len(mr.missing) > 0 {
 		return fmt.Errorf(
-			"MapCopyAll: missing %s", strings.Join(mr.missing, ","),
+			"MapCopyAll: missing %s", strings.Join(mr.missing, ", "),
 		)
 	}
 	return nil
