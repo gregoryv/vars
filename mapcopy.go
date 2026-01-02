@@ -34,13 +34,12 @@ type mapCopier struct {
 // Read copies pairs of values from the input map.
 // Pairs argument must be an even list of destination followed by key in map.
 //
-//  [
-//    dest, key,
-//    dest, key,
-//    ...,
-//    dest, key,
-//  ]
-//
+//	[
+//	  dest, key,
+//	  dest, key,
+//	  ...,
+//	  dest, key,
+//	]
 func (me *mapCopier) Copy(pairs ...interface{}) error {
 	var errs errors
 	for i := 0; i < len(pairs); i = i + 2 {
