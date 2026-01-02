@@ -1,3 +1,5 @@
+ARCHIVED! Moved to https://sogvin.com/vars
+
 Package [vars](https://pkg.go.dev/github.com/gregoryv/vars) provides
 copy functions for variables.
 
